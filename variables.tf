@@ -8,30 +8,38 @@ variable "secret_key" {
 
 variable "region" {
   description = "The AWS region to create resources in."
-  default = "us-east-1"
+  default     = "eu-west-1"
 }
 
-variable "availability_zone" {
+variable "availability_zone_1" {
   description = "The availability zone"
-  default = "us-east-1b"
+  default     = "eu-west-1a"
+}
+
+variable "availability_zone_2" {
+  description = "The availability zone"
+  default     = "eu-west-1b"
 }
 
 variable "ecs_cluster_name" {
   description = "The name of the Amazon ECS cluster."
-  default = "jenkins"
+  default     = "jenkins"
 }
 
 variable "amis" {
   description = "Which AMI to spawn. Defaults to the AWS ECS optimized images."
+
   default = {
-    us-east-1 = "ami-8f7687e2"
-    us-west-1 = "ami-bb473cdb"
-    us-west-2 = "ami-84b44de4"
-    eu-west-1 = "ami-4e6ffe3d"
-    eu-central-1 = "ami-b0cc23df"
-    ap-northeast-1 = "ami-095dbf68"
-    ap-southeast-1 = "ami-cf03d2ac"
-    ap-southeast-2 = "ami-697a540a"
+    us-east-1      = "ami-9eb4b1e5"
+    us-west-2      = "ami-1d668865"
+    us-west-1      = "ami-4a2c192a"
+    eu-west-2      = "ami-cb1101af"
+    eu-west-1      = "ami-8fcc32f6"
+    eu-central-1   = "ami-0460cb6b"
+    ap-northeast-1 = "ami-b743bed1"
+    ap-southeast-2 = "ami-c1a6bda2"
+    ap-southeast-1 = "ami-9d1f7efe"
+    ca-central-1   = "ami-b677c9d2"
   }
 }
 
@@ -40,41 +48,39 @@ variable "instance_type" {
 }
 
 variable "key_name" {
-  default = "devops-tf"
   description = "SSH key name in your AWS account for AWS instances."
 }
 
 variable "min_instance_size" {
-  default = 1
+  default     = 1
   description = "Minimum number of EC2 instances."
 }
 
 variable "max_instance_size" {
-  default = 2
+  default     = 2
   description = "Maximum number of EC2 instances."
 }
 
 variable "desired_instance_capacity" {
-  default = 1
+  default     = 1
   description = "Desired number of EC2 instances."
 }
 
 variable "desired_service_count" {
-  default = 1
+  default     = 1
   description = "Desired number of ECS services."
 }
 
-variable "s3_bucket" {
-  default = "mycompany-jenkins"
+variable "terraform_bucket" {
   description = "S3 bucket where remote state and Jenkins data will be stored."
 }
 
 variable "restore_backup" {
-  default = false
+  default     = false
   description = "Whether or not to restore Jenkins backup."
 }
 
-variable "jenkins_repository_url" {
-  default = "jenkins"
-  description = "ECR Repository for Jenkins."
+variable "jenkins_image_name" {
+  default     = "devops/jenkins"
+  description = "Jenkins image name."
 }

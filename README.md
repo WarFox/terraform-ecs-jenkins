@@ -21,12 +21,12 @@ $ export TF_VAR_access_key=$AWS_ACCESS_KEY # exposed as access_key in terraform 
 $ export TF_VAR_secret_key=$AWS_SECRET_ACCESS_KEY # exposed as secret_key in terraform scripts
 ```
 
-You need to change the default values of `s3_bucket` and `key_name` terraform variables defined in `variables.tf` or set them via environment variables:
+You need to change the default values of `terraform_bucket` and `key_name` terraform variables defined in `variables.tf` or set them via environment variables:
 ```
-$ export TF_VAR_s3_bucket=<your s3 bucket>
+$ export TF_VAR_terraform_bucket=<your s3 bucket>
 $ export TF_VAR_key_name=<your keypair name>
 ```
-You also need to change the value of `STATEBUCKET` in the Makefile to match that of the `s3_bucket` terraform variable.
+You also need to change the value of `STATEBUCKET` in the Makefile to match that of the `terraform_bucket` terraform variable.
 
 #### Run 'terraform plan'
 
@@ -51,7 +51,7 @@ __Note__: If you provisioned the Jenkins image in ECR, the repository URL would 
 
 ## Jenkins Data Backup
 
-When an EC2 instance is started in started in the Jenkins autoscaling group, a cronjob is configured on it (see `templates/user_data.tpl`) to back up the Jenkins data directory that resides in the `/ecs/jenkins-home` directory to an S3 bucket set via the `s3_bucket` variable (see `variables.tf`).
+When an EC2 instance is started in started in the Jenkins autoscaling group, a cronjob is configured on it (see `templates/user_data.tpl`) to back up the Jenkins data directory that resides in the `/ecs/jenkins-home` directory to an S3 bucket set via the `terraform_bucket` variable (see `variables.tf`).
 There is a `restore_backup` terraform variable, which when set to true attempts to restore the S3 backup when an instance is started. This doesn't work yet because the backup needs to be restored before the Jenkins ECS task is started, which is currently not what happens.
 To work around this, you can manually run the restore backup command on the Jenkins EC2 instance and restart the ECS task by terminating the running container.
 
@@ -59,7 +59,7 @@ To work around this, you can manually run the restore backup command on the Jenk
     --env aws_key=${access_key} \
     --env aws_secret=${secret_key} \
     --env cmd=sync-s3-to-local \
-    --env SRC_S3=s3://${s3_bucket}/${ecs_cluster_name}/jenkins-home/  \
+    --env SRC_S3=s3://${terraform_bucket}/${ecs_cluster_name}/jenkins-home/  \
     -v /ecs/jenkins-home:/opt/dest \
     garland/docker-s3cmd
 

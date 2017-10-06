@@ -1,11 +1,15 @@
+provider "aws" {
+  region = "${var.region}"
+}
+
 resource "aws_ecr_repository" "jenkins" {
-  name = "${var.image_name}"
+  name = "${var.jenkins_image_name}"
+
   provisioner "local-exec" {
-    command = "./deploy-image.sh ${self.repository_url} ${var.jenkins_image_name}"
+    command = "./docker/deploy-image.sh ${self.repository_url} ${var.jenkins_image_name} ${var.region}"
   }
 }
 
-variable "jenkins_image_name" {
-  default = "mycompany/jenkins"
-  description = "Jenkins image name."
+output "repository_url" {
+  value = "${aws_ecr_repository.jenkins.repository_url}"
 }

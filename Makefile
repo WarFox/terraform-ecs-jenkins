@@ -43,5 +43,5 @@ destroy:
 # for second nested Makefile
 init.txt:
 	@echo "initialize remote state file"
-	terraform remote config -backend=s3 -backend-config="bucket=$(STATEBUCKET)" -backend-config="key=$(PREFIX)/terraform.tfstate"
-	echo "ran terraform remote config -backend=s3 -backend-config=\"bucket=$(STATEBUCKET)\" -backend-config=\"key=$(PREFIX)/terraform.tfstate\"" > ./init.txt
+	terraform init
+	@echo "ran terraform init" > ./init.txt
